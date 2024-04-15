@@ -9,11 +9,12 @@
 
 #include <iostream>
 #include <variant>
+#include <vector>
 
 //------------------------------------------------
 //	My headers
 
-#include "AnyVariantContainer.h"
+#include "Visitors.h"
 
 //------------------------------------------------
 //	Global Scope
@@ -24,23 +25,55 @@
 
 int main()
 {
+
+	std::cout << "//------------------------------------------------" << std::endl;
+	std::cout << "// Single Variant"<< std::endl << std::endl;
+
 	std::variant<int, double, std::string> myVariant;
-	std::variant<int, double, std::string> myVariant2;
 	myVariant = 1;
-	myVariant2 = "foo";
 
 	// Print original value
 	std::visit(PrintVisitor{}, myVariant);
-	std::visit(PrintVisitor{}, myVariant2);
 
 	// Invoke our visitor
 	std::visit(DoubleVisitor{}, myVariant);
-	std::visit(DoubleVisitor{}, myVariant2);
 
-	// Print new val
+	// Print new val using lambda cos I like it (Lambdas 4lyf!)
+	std::visit(lambdaPrintVisitor, myVariant);
+
+
+	// Repeat with a string to prove that multiple types can be used
+	myVariant = "foo";
 	std::visit(PrintVisitor{}, myVariant);
-	std::visit(PrintVisitor{}, myVariant2);
+	std::visit(DoubleVisitor{}, myVariant);
+	std::visit(lambdaPrintVisitor, myVariant);
 
+	std::cout << std::endl << "//------------------------------------------------" << std::endl;
+	std::cout << "// Variant Vector" << std::endl << std::endl;
 
+	// Now for a container
+	std::vector<std::variant<int, double, std::string>> variantCollection;
+	variantCollection.emplace_back(1);
+	variantCollection.emplace_back(2.2f);
+	variantCollection.emplace_back("foo");
+
+	// Repeat steps again, using a for loop as we now have multiple elements
+	for (const auto& variant : variantCollection)
+	{
+		std::visit(PrintVisitor{}, variant);
+	}
+	std::cout << std::endl;
+
+	for (auto& variant : variantCollection)
+	{
+		std::visit(DoubleVisitor{}, variant);
+	}
+
+	for (const auto& variant : variantCollection)
+	{
+		std::visit(lambdaPrintVisitor, variant);
+	}
+
+	std::cout << std::endl << "//------------------------------------------------" << std::endl;
 	return 0;
 }

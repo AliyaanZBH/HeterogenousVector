@@ -20,7 +20,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AnyVariantContainer.h">
+    <ClInclude Include="Visitors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

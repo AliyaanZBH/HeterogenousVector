@@ -1,7 +1,8 @@
 #pragma once
 //================================================
-// name: AnyVariantContainer.h
-// desc: Interface for a "simple" heterogenous container using std::variant and std::any
+// name: Visitors.h
+// desc: Helper file full of useful callables that we can use to test our heterogenous containers
+//// desc: Interface for a "simple" heterogenous container using std::variant and std::any
 // auth: Aliyaan Zulfiqar
 //================================================
 
@@ -30,7 +31,7 @@ struct PrintVisitor
 	void operator()(T&& input) { std::cout << input << std::endl; }
 };
 // Lambda version of the above cos I think it's cool.
-auto lambdaPrintVisitor = [](auto&& input) {std::cout << input << std::endl; };
+auto lambdaPrintVisitor = [](auto&& input) { std::cout << input << std::endl; };
 
 //------------------------------------------------
 //	Container Interface
