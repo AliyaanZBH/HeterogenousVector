@@ -144,6 +144,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="TruestHeterogenousContainer.h" />
     <ClInclude Include="VariantContainer.h" />
     <ClInclude Include="Visitors.h" />
   </ItemGroup>
