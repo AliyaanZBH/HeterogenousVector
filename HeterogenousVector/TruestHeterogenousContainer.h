@@ -37,12 +37,24 @@ namespace thc {
     class Container {
     public:
 
+        //------------------------------------------------
+        //	Constructors and Destructors
+
         Container() = default;
 
         Container(const Container& _other)
         {
             *this = _other;
         }
+        
+        // Call our bespoke clear function
+        ~Container()
+        {
+            clear();
+        }
+
+        //------------------------------------------------
+        //	Operators
 
         Container& operator=(const Container& other)
         {
@@ -56,6 +68,9 @@ namespace thc {
             }
             return *this;
         }
+
+        //------------------------------------------------
+        //	Key Methods
 
         // Used to empty our container
         void clear()
@@ -90,7 +105,21 @@ namespace thc {
             // Actually push the item back into the container
             items<T>[this].push_back(elem);
         }
+
+        template<class T>
+        void visit(T&& visitor)
+        {
+            // Pass on the visitor, aswell as try to construct an instance of T::Types
+            visit_impl(visitor, typename std::decay_t<T>::Types{});
+        }
+
     private:
+
+        //------------------------------------------------
+        //	Attributes (Member Variables)
+
+        // Static variable template map of all the items in our container
+        // But with our heterogeneous container we want instances to only know or care about the types that have been used for that specific instance
         template<class T>
         static std::unordered_map<const Container*, std::vector<T>> items;
 
@@ -98,9 +127,30 @@ namespace thc {
         std::vector<std::function<void(Container&)>> clearFunctions;
         // One for copying aswell
         std::vector<std::function<void(const Container&, Container&)>> copyFunctions;
+
+        //------------------------------------------------
+        //	Private helper Methods
+
+        // Helper for visit(), provides the implementation for a given visitor
+        template<class T, template<class...> class TLIST, class... TYPES>
+        void visit_impl(T&& visitor, TLIST<TYPES...>)
+        {
+            // This function also needs a helper, so call that via a unary left fold
+            (..., visit_impl_help<std::decay_t<T>, TYPES>(visitor));   (..., visit_impl_help<std::decay_t<T>, TYPES>(visitor));
+        }
+
+        template<class T, class U>
+        void visit_impl_help(T& visitor)
+        {
+            static_assert(has_visit_v<T, U>, "Visitors must provide a visit function accepting a reference for each type");
+            for (auto&& element : items<U>[this])
+            {
+                visitor(element);
+            }
+        }
     };
 
-    // Storage for the static member - abuseing variable templates and creating a mapping of container pointers to vectors
+    // Storage for the static member - abusing variable templates and creating a mapping of container pointers to vectors
     template<class T>
     std::unordered_map<const Container*, std::vector<T>> Container::items;
-}
+};
