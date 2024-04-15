@@ -10,11 +10,10 @@
 
 
 //------------------------------------------------
-//	Helper Visitors (Functors)
+//	Helper Callables (Functors)
 //
-// Applying the Vistor Pattern to process our container
+// Applying the Vistor Pattern to process our container, using callables that can be invoked using std::visit
 // https://en.wikipedia.org/wiki/Visitor_pattern
-
 
 // This simple Visitor takes a variant input and doubles it.
 struct DoubleVisitor
