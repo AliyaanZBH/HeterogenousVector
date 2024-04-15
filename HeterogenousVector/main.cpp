@@ -15,6 +15,7 @@
 //	My headers
 
 #include "Visitors.h"
+#include "VariantContainer.h"
 
 //------------------------------------------------
 //	Global Scope
@@ -52,27 +53,20 @@ int main()
 	std::cout << "// Variant Vector" << std::endl << std::endl;
 
 	// Now for a container
-	std::vector<std::variant<int, double, std::string>> variantCollection;
-	variantCollection.emplace_back(1);
-	variantCollection.emplace_back(2.2f);
-	variantCollection.emplace_back("foo");
+	VariantContainer<int, double, std::string> variantCollection;
+	variantCollection.objects.emplace_back(1);
+	variantCollection.objects.emplace_back(2.2f);
+	variantCollection.objects.emplace_back("foo");
 
-	// Repeat steps again, using a for loop as we now have multiple elements
-	for (const auto& variant : variantCollection)
-	{
-		std::visit(PrintVisitor{}, variant);
-	}
+	// Repeat steps again, using custom implementation to avoid writing a for loop every time
+	variantCollection.visit(PrintVisitor{});
+
 	std::cout << std::endl;
 
-	for (auto& variant : variantCollection)
-	{
-		std::visit(DoubleVisitor{}, variant);
-	}
+	variantCollection.visit(DoubleVisitor{});
 
-	for (const auto& variant : variantCollection)
-	{
-		std::visit(lambdaPrintVisitor, variant);
-	}
+	variantCollection.visit(lambdaPrintVisitor);
+
 
 	std::cout << std::endl << "//------------------------------------------------" << std::endl;
 	return 0;

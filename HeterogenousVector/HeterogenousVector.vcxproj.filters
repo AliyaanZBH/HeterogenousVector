@@ -23,5 +23,8 @@
     <ClInclude Include="Visitors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="VariantContainer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

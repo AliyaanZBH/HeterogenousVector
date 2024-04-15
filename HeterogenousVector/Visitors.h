@@ -2,19 +2,15 @@
 //================================================
 // name: Visitors.h
 // desc: Helper file full of useful callables that we can use to test our heterogenous containers
-//// desc: Interface for a "simple" heterogenous container using std::variant and std::any
 // auth: Aliyaan Zulfiqar
 //================================================
-
-//------------------------------------------------
-//	STL Headers
 
 
 //------------------------------------------------
 //	Helper Callables (Functors)
 //
-// Applying the Vistor Pattern to process our container, using callables that can be invoked using std::visit
-// https://en.wikipedia.org/wiki/Visitor_pattern
+//	Applying the Vistor Pattern to process our container, using callables that can be invoked using std::visit
+//	https://en.wikipedia.org/wiki/Visitor_pattern
 
 // This simple Visitor takes a variant input and doubles it.
 struct DoubleVisitor
@@ -33,5 +29,3 @@ struct PrintVisitor
 // Lambda version of the above cos I think it's cool.
 auto lambdaPrintVisitor = [](auto&& input) { std::cout << input << std::endl; };
 
-//------------------------------------------------
-//	Container Interface
