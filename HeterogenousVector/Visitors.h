@@ -5,6 +5,7 @@
 // auth: Aliyaan Zulfiqar
 //================================================
 
+#include "TruestHeterogenousContainer.h"
 
 //------------------------------------------------
 //	Helper Callables (Functors)
@@ -29,3 +30,14 @@ struct PrintVisitor
 // Lambda version of the above cos I think it's cool.
 auto lambdaPrintVisitor = [](auto&& input) { std::cout << input << std::endl; };
 
+//------------------------------------------------
+//	Truest Heterogenous Container bespoke visitors!
+
+struct my_visitor : thc::VisitorBase<int, double>
+{
+	template<class T>
+	void operator()(T& _in)
+	{
+		_in += _in;
+	}
+};

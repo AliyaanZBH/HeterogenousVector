@@ -11,8 +11,29 @@
 #include <unordered_map>
 #include <functional>
 
-// The namespace stands for Truest Heterogenous Container, but I figured typing that out every time would be a pain :p
-namespace THC {
+// The namespace stands for "Truest Heterogenous Container", but I figured typing that out every time would be a pain :p
+namespace thc {
+
+    //------------------------------------------------
+    //	Visitor Support
+
+    // A class that utilises variadic templates to create a list of types
+    // Used to communicate the types that our visitors are capable of visiting
+    template<class...>
+    struct TypeList {};
+
+    // Templated base class for visitors that defines a given type list
+    // Use this when writing a visitor callable, ensuring it inherits from this base
+    template<class... TYPES>
+    struct VisitorBase
+    {
+        using Types = thc::TypeList<TYPES...>;
+    };
+
+    //------------------------------------------------
+    //	Container Interface
+
+    // Our actual Heterogenous Container!
     class Container {
     public:
 

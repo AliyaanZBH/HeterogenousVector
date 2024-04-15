@@ -72,13 +72,16 @@ int main()
 	std::cout << std::endl << "//------------------------------------------------" << std::endl;
 	std::cout << "// THE Heterogenous Container" << std::endl << std::endl;
 
-	THC::Container heterogenous_container;
+	// Here he comes
+	thc::Container heterogenous_container;
 	heterogenous_container.push_back(1);
 	heterogenous_container.push_back(2.f);
 	heterogenous_container.push_back('c');
-	// We can even push back custom types!
+
+	// He can even push back custom types!
 	struct randomCustomType {};
 	heterogenous_container.push_back(randomCustomType{});
+
 
 	return 0;
 }
