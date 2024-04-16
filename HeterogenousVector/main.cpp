@@ -24,7 +24,6 @@
 
 //------------------------------------------------
 //	Entry point
-
 int main()
 {
 
@@ -73,24 +72,24 @@ int main()
 	std::cout << "// THE Heterogenous Container" << std::endl << std::endl;
 
 	// Here he comes
-	thc::Container heterogenous_container;
-	heterogenous_container.push_back(1);
-	heterogenous_container.push_back(2.05f);
-	heterogenous_container.push_back('c');
-	heterogenous_container.push_back(std::string{ "foo" });
+	thc::Container heterogenousContainer;
+	heterogenousContainer.push_back(1);
+	heterogenousContainer.push_back(2.05f);
+	heterogenousContainer.push_back('c');
+	heterogenousContainer.push_back(std::string{ "foo" });
 
 	// Lets print all these types and check that our visiting works
 	std::cout << "Truest Heterogenous Container with integral types: " << std::endl;
 	// Call the lambda which in turn calls our visit function
-	printTHC(heterogenous_container);
+	printTHC(heterogenousContainer);
 
 	// Let's double them and print again
 	std::cout << "Double Visitor: " << std::endl;
-	doubleTHC(heterogenous_container);
-	printTHC(heterogenous_container);
+	doubleTHC(heterogenousContainer);
+	printTHC(heterogenousContainer);
 	// He can even push back custom types!
 	struct randomCustomType {};
-	heterogenous_container.push_back(randomCustomType{});
+	heterogenousContainer.push_back(randomCustomType{});
 
 
 

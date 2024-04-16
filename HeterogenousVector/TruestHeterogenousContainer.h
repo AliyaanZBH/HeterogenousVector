@@ -10,6 +10,7 @@
 
 #include <unordered_map>
 #include <functional>
+#include <vector>
 
 // The namespace stands for "Truest Heterogenous Container", but I figured typing that out every time would be a pain :p
 namespace thc {
@@ -133,13 +134,13 @@ namespace thc {
         //------------------------------------------------
         //	Private helper Methods
 
-        // Helper for visit(), provides the implementation for a given visitor
+        // Helper for visit(), provides the implementation for a given visitor, using template template arguments
         template<class T, template<class...> class TLIST, class... TYPES>
         void visit_impl(T&& visitor, TLIST<TYPES...>)
         {
             // This function also needs a helper, so call that via a unary left fold
             // Also implement a decay to get the function pointer
-            (..., visit_impl_help<std::decay_t<T>, TYPES>(visitor));   (..., visit_impl_help<std::decay_t<T>, TYPES>(visitor));
+            (..., visit_impl_help<std::decay_t<T>, TYPES>(visitor));
         }
 
         template<class T, class U>
