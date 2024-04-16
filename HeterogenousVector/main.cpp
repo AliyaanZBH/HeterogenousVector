@@ -54,9 +54,9 @@ int main()
 
 	// Now for a container
 	VariantContainer<int, float, std::string> variantCollection;
-	variantCollection.objects.emplace_back(1);
-	variantCollection.objects.emplace_back(2.2f);
-	variantCollection.objects.emplace_back("foo");
+	variantCollection.elements.emplace_back(1);
+	variantCollection.elements.emplace_back(2.2f);
+	variantCollection.elements.emplace_back("foo");
 
 	// Repeat steps again, using custom implementation to avoid writing a for loop every time
 	variantCollection.visit(PrintVisitor{});
@@ -79,7 +79,7 @@ int main()
 	heterogenousContainer.push_back(std::string{ "foo" });
 
 	// Lets print all these types and check that our visiting works
-	std::cout << "Truest Heterogenous Container with integral types: " << std::endl;
+	std::cout << "Truest Heterogenous Container with integral types: " << std::endl << std::endl;
 
 	// Call the lambda which in turn calls our visit function - method 1
 	printTHC(heterogenousContainer);
@@ -104,25 +104,32 @@ int main()
 
 	// Test clearing by emptying our original THC
 	heterogenousContainer.clear();
-	std::cout << "Original THC after clearing it: " << std::endl;
+	std::cout << "Original THC after clearing it: " << std::endl << std::endl;
 	printTHC(heterogenousContainer);
 
 	// And lets test our copy by making sure it didn't also clear itself!
-	std::cout << "New THC after clearing original: " << std::endl;
+	std::cout << "New THC after clearing original: " << std::endl << std::endl;
 	printTHC(c2);
 	
 	// Let's restore the original container now
 	heterogenousContainer = c2;
 
 	// Quick test to make sure that worked
-	std::cout << "Original THC after copying the new one: " << std::endl;
+	std::cout << "Original THC after copying the new one: " << std::endl << std::endl;
 	printTHC(heterogenousContainer);
 
-	// Cool little trick - as the THC is a custom type... it can also store itself!
-	heterogenousContainer.push_back(c2);
+	// Finally, want to show off a neat little trick. To do so, let's double the new container
+	std::cout << "Doubling the new THC!: " << std::endl;
+	doubleTHC(c2);
+	printTHC(c2);
 
-	// Note - the visitors can simply specify a container as a type, but it won't compile until new operators are written to unpack the container
-	// I was thinking of doing this but I think its a bit overkill! :p
+	// Cool little trick - as the THC is a custom type... it can also store itself!
+	std::cout << "Original THC after pushing the new one into it!: " << std::endl << std::endl;
+	heterogenousContainer.push_back(c2);
+	
+	// We can even print it!
+	printTHC(heterogenousContainer);
+
 
 	return 0;
 }

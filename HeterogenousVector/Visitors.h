@@ -50,10 +50,17 @@ struct HeterogenousDoubleVisitor : thc::VisitorBase<int, float>
 	}
 };
 
-struct HeterogenousPrintVisitor : thc::VisitorBase<int, float, char, std::string>
+struct HeterogenousPrintVisitor : thc::VisitorBase<int, float, char, std::string, thc::Container>
 {
 	template <class T>
 	void operator()(T& input) { std::cout << input << std::endl; }
+
+	// Another one for an entire heterogenous container!
+	void operator()(thc::Container& input) 
+	{ 
+		std::cout << "\nAn element in this container is itself a container!\nPrinting contents of that container now:\n\n"; 
+		input.visit(*this); 
+	}
 };
 
 // Lambdas that take in a given container, and then proceed to call the containers visit() function, passing our new visitors to the container
