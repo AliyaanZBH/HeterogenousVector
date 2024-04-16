@@ -38,6 +38,9 @@ auto lambdaPrintVisitor = [](auto&& input) { std::cout << input << std::endl; };
 //		 - I decided to keep them for the sake of completeness.
 //
 
+
+// Use these by calling visit() on a THC and then passing this visitor in! e.g. container.visit(HeterogenousDoubleVisitor{});
+// It's that easy!
 struct HeterogenousDoubleVisitor : thc::VisitorBase<int, float>
 {
 	template<class T>
@@ -53,6 +56,6 @@ struct HeterogenousPrintVisitor : thc::VisitorBase<int, float, char, std::string
 	void operator()(T& input) { std::cout << input << std::endl; }
 };
 
-// We now need to write lambdas that take in a given container, and then proceed to call the containers visit() function, passing our new visitors to the container
+// Lambdas that take in a given container, and then proceed to call the containers visit() function, passing our new visitors to the container
 auto doubleTHC	= [](thc::Container& input) { input.visit(HeterogenousDoubleVisitor{}); std::cout << std::endl; };
 auto printTHC	= [](thc::Container& input) { input.visit(HeterogenousPrintVisitor{}); std::cout << std::endl; };

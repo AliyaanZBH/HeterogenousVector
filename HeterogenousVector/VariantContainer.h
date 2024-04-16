@@ -23,11 +23,11 @@ struct VariantContainer
     template <class V>
     void visit(V&& visitor)
     {
-        for (auto& object : objects)
+        for (auto& el : elements)
         {
-            std::visit(visitor, object);
+            std::visit(visitor, el);
         }
     }
     using value_type = std::variant<T...>;
-    std::vector<value_type> objects;
+    std::vector<value_type> elements;
 };

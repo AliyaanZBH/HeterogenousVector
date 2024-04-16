@@ -19,7 +19,7 @@
 #include "TruestHeterogenousContainer.h"
 
 //------------------------------------------------
-//	Global Scope
+//	Global Variables
 
 
 //------------------------------------------------
@@ -74,25 +74,55 @@ int main()
 	// Here he comes
 	thc::Container heterogenousContainer;
 	heterogenousContainer.push_back(1);
-	heterogenousContainer.push_back(2.05f);
+	heterogenousContainer.push_back(2.3456f);
 	heterogenousContainer.push_back('c');
 	heterogenousContainer.push_back(std::string{ "foo" });
 
 	// Lets print all these types and check that our visiting works
 	std::cout << "Truest Heterogenous Container with integral types: " << std::endl;
-	// Call the lambda which in turn calls our visit function
+
+	// Call the lambda which in turn calls our visit function - method 1
 	printTHC(heterogenousContainer);
 
 	// Let's double them and print again
-	std::cout << "Double Visitor: " << std::endl;
+	std::cout << "Double Visitor (won't double chars or strings): " << std::endl;
+
 	doubleTHC(heterogenousContainer);
-	printTHC(heterogenousContainer);
-	// He can even push back custom types!
+
+	// We can also call the visit function directly here, and pass the visitor in that way - method 2
+	heterogenousContainer.visit(HeterogenousPrintVisitor{});
+	std::cout << std::endl;
+
+	// He can even push back custom types! (Though visitors will need to be tweaked / written to account for this!)
 	struct randomCustomType {};
 	heterogenousContainer.push_back(randomCustomType{});
 
+	// He comes with QoL tools such as copy construction / assignment
+	thc::Container c2 = heterogenousContainer;
+	std::cout << "New THC using assignment : " << std::endl << std::endl;
+	printTHC(c2);
 
+	// Test clearing by emptying our original THC
+	heterogenousContainer.clear();
+	std::cout << "Original THC after clearing it: " << std::endl;
+	printTHC(heterogenousContainer);
 
+	// And lets test our copy by making sure it didn't also clear itself!
+	std::cout << "New THC after clearing original: " << std::endl;
+	printTHC(c2);
+	
+	// Let's restore the original container now
+	heterogenousContainer = c2;
+
+	// Quick test to make sure that worked
+	std::cout << "Original THC after copying the new one: " << std::endl;
+	printTHC(heterogenousContainer);
+
+	// Cool little trick - as the THC is a custom type... it can also store itself!
+	heterogenousContainer.push_back(c2);
+
+	// Note - the visitors can simply specify a container as a type, but it won't compile until new operators are written to unpack the container
+	// I was thinking of doing this but I think its a bit overkill! :p
 
 	return 0;
 }
