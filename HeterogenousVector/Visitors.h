@@ -17,7 +17,7 @@
 struct DoubleVisitor
 {
 	void operator()(int& input) { input += input; }
-	void operator()(double& input) { input += input; }
+	void operator()(float& input) { input += input; }
 	void operator()(std::string& input) { input += input; }
 };
 
@@ -33,11 +33,26 @@ auto lambdaPrintVisitor = [](auto&& input) { std::cout << input << std::endl; };
 //------------------------------------------------
 //	Truest Heterogenous Container bespoke visitors!
 
-struct my_visitor : thc::VisitorBase<int, double>
+//
+//	Note - all of these can be used any time you call std::visit aswell! This means the old functions above are no longer needed.
+//		 - I decided to keep them for the sake of completeness.
+//
+
+struct HeterogenousDoubleVisitor : thc::VisitorBase<int, float>
 {
 	template<class T>
-	void operator()(T& _in)
+	void operator()(T& input)
 	{
-		_in += _in;
+		input += input;
 	}
 };
+
+struct HeterogenousPrintVisitor : thc::VisitorBase<int, float, char, std::string>
+{
+	template <class T>
+	void operator()(T& input) { std::cout << input << std::endl; }
+};
+
+// We now need to write lambdas that take in a given container, and then proceed to call the containers visit() function, passing our new visitors to the container
+auto doubleTHC	= [](thc::Container& input) { input.visit(HeterogenousDoubleVisitor{}); std::cout << std::endl; };
+auto printTHC	= [](thc::Container& input) { input.visit(HeterogenousPrintVisitor{}); std::cout << std::endl; };

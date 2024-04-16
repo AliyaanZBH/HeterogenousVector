@@ -110,6 +110,8 @@ namespace thc {
         void visit(T&& visitor)
         {
             // Pass on the visitor, aswell as try to construct an instance of T::Types
+            // Using std::decay to pass the type by value - importantly, if T is a function type (or callable), the decayed type will be a function pointer
+            // Regardless, it will be a non-reference, non-cv-qualified(const volatile) type 
             visit_impl(visitor, typename std::decay_t<T>::Types{});
         }
 
@@ -136,15 +138,17 @@ namespace thc {
         void visit_impl(T&& visitor, TLIST<TYPES...>)
         {
             // This function also needs a helper, so call that via a unary left fold
+            // Also implement a decay to get the function pointer
             (..., visit_impl_help<std::decay_t<T>, TYPES>(visitor));   (..., visit_impl_help<std::decay_t<T>, TYPES>(visitor));
         }
 
         template<class T, class U>
         void visit_impl_help(T& visitor)
         {
-            static_assert(has_visit_v<T, U>, "Visitors must provide a visit function accepting a reference for each type");
+            // TODO: Little bit of debugging here to let the client know if the visitor they have written is acceptable would be GREAT!
             for (auto&& element : items<U>[this])
             {
+                // Call the visitor object against every element, we are now successfuly visiting!
                 visitor(element);
             }
         }
