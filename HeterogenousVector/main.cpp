@@ -23,6 +23,7 @@
 //------------------------------------------------
 //	Global Variables and Macros
 
+// Warning - when set to higher values (e.g. 100,000+), the std::any container will take MINUTES (even HOURS) to complete. Please bear that in mind :)
 #define NUM_ITEMS 10000
 
 
@@ -147,7 +148,7 @@ void benchmarkHeterogenousContainer()
 	std::cout << std::endl << "//------------------------------------------------" << std::endl;
 	std::cout << "// Heterogenous Container Benchmark" << std::endl << std::endl;
 
-	// Push back ten thousand ints, floats and chars
+	// Push back as many ints, floats and chars as determined by the "NUM_ITEMS" macro
 	auto time_start = std::chrono::system_clock::now();
 	{
 		thc::Container c;
@@ -173,7 +174,7 @@ void benchmarkAnyContainer()
 	std::cout << std::endl << "//------------------------------------------------" << std::endl;
 	std::cout << "// std::any Container Benchmark" << std::endl << std::endl;
 
-	// Push back ten thousand ints, floats and chars
+	// Push back as many ints, floats and chars as determined by the "NUM_ITEMS" macro
 	auto time_start = std::chrono::system_clock::now();
 	{
 		AnyContainer c;
